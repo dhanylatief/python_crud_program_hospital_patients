@@ -1,5 +1,5 @@
 def crud_menu():
-    return print('''Welcome to Ophthalmology Patient Database
+    return print('''\nWelcome to Ophthalmology Patient Database
 1. View Patient Database
 2. Add a New Patient
 3. Edit a Patient Data
