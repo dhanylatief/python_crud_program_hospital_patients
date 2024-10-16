@@ -1,10 +1,10 @@
-# Python CRUD Application for [Business Domain]
+# Python CRUD Application for Healthcare Industry
 
-A comprehensive Python application for managing [Data Entity] data with Create, Read, Update, and Delete (CRUD) operations.
+A comprehensive Python application for managing patient queue data with Create, Read, Update, and Delete (CRUD) operations.
 
 ## Business Understanding
 
-This project caters to the [Industry/Business Domain] industry, specifically addressing the need to manage [Data Entity] data efficiently. [Data Entity] plays a crucial role in [Explain the importance of data entity in business processes].
+This project caters to the healthcare industry, specifically addressing the need to manage patient queue data efficiently. Patient queue plays a crucial role in making sure a hospital's day-to-day operations remain smooth. It also helps in recognizing problems that might arise in the hospital's service, such as certain departments or subspecialties being understaffed, prioritizing patients who paid more in the same queue, etc.
 
 **Benefits:**
 
@@ -15,29 +15,29 @@ This project caters to the [Industry/Business Domain] industry, specifically add
 
 **Target Users:**
 
-This application is designed for [Target Users] (e.g., sales representatives, inventory managers, customer support agents) within the organization to facilitate their [Tasks/Activities] related to [Data Entity].
+This application is designed for data admins within the organization to facilitate their documentation process related to patient queue.
 
 ## Features
 
 * **Create:**
-    * Add new [Data Entity] entries with essential details like [List relevant fields].
+    * Add new patient queue entries with essential details like waiting time.
     * Implement validation rules to ensure data integrity (if applicable, e.g., unique identifiers, data type checks).
 * **Read:**
-    * Search and retrieve specific [Data Entity] records by applying filters based on [Searchable fields].
-    * Display comprehensive information for each [Data Entity] in a user-friendly format.
+    * Search and retrieve specific patient queue records by applying filters based on patient ID.
+    * Display comprehensive information for each patient queue in a user-friendly format.
     * Integrate pagination and sorting capabilities for large datasets (if applicable).
 * **Update:**
-    * Modify existing [Data Entity] data to reflect changes in [Attributes/Properties].
+    * Modify existing patient queue data to reflect changes in the patient's waiting time, exam time, care time, and/or insurance payment.
     * Provide clear confirmation or error messages based on update success or failure.
 * **Delete:**
-    * Allow for the removal of unwanted [Data Entity] records with appropriate authorization checks (if applicable).
+    * Allow for the removal of unwanted patient queue records with appropriate authorization checks (if applicable).
     * Implement soft delete functionality to prevent permanent data loss (optional, depending on business needs).
     * Consider offering data archiving capabilities (optional).
 * **Security:**
     * Implement user authentication and authorization mechanisms (if sensitive data is involved) to control access to different CRUD operations.
     * ... (Specify additional security features as needed)
 * **Reporting:**
-    * Generate reports or summaries based on [Data Entity] data to support [Business Functions] (optional).
+    * Generate reports or summaries based on patient queue data to support hospital operations (optional).
     * Export data in various formats (e.g., CSV, Excel) for further analysis (optional).
 
 ## Installation
@@ -76,5 +76,5 @@ This project utilizes a [Data Structure] (e.g., relational database, JSON docume
    * ... (List all relevant fields)
 
 ## Contributing
-We welcome contributions to this project! Please feel free to open a pull request, sent to [your_email] or submit an issue if you encounter any problems or have suggestions for improvements.
+We welcome contributions to this project! Please feel free to open a pull request, sent to m.dhany.latief@gmail.com or submit an issue if you encounter any problems or have suggestions for improvements.
 

@@ -38,9 +38,9 @@ def main():
         menu.crud_menu()
         input_user = input("Insert option number (1-5): ")
         if input_user == "1":
-            read.read(db.patient_data)
+            read.show_patientdb(db.patient_data)
         elif input_user == "2":
-            create.create(db.patient_data)
+            create.new_patient_data(db.patient_data)
         elif input_user == "3":
             update.update(db.patient_data)
         elif input_user == "4":
@@ -50,7 +50,6 @@ def main():
             break
         else:
             print("Invalid Input.")
-
 
 if __name__ == "__main__":
         main()
