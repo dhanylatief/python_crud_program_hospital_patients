@@ -15,5 +15,21 @@ def new_patient_data(patient_data: dict):
     patient_data["Care Time"].append(waiting_time+exam_time)
     patient_data["Subspecialty"].append(subspecialty)
     patient_data["Insurance"].append(insurance)
-    
-    return print("New patient added.")
+    for i in range(len(patient_data["Name"])):
+        print(f"ID: {patient_data['Patient ID'][i]} | Name: {patient_data['Name'][i]} | Waiting Time: {patient_data['Waiting Time'][i]} | Care Time: {patient_data['Care Time'][i]} | Exam Time: {patient_data['Exam Time'][i]} | Subspecialty: {patient_data['Subspecialty'][i]} | Insurance: {patient_data['Insurance'][i]}")
+    confirm_new_patient = input("Is the data correct (Y/N)? ")
+    if confirm_new_patient.upper() == "Y":
+        print("New patient added.")
+    elif confirm_new_patient.upper() == "N":
+        patient_data["Patient ID"].remove(patient_id)
+        patient_data["Name"].remove(name)
+        patient_data["Waiting Time"].remove(waiting_time)
+        patient_data["Exam Time"].remove(exam_time)
+        patient_data["Care Time"].remove(waiting_time+exam_time)
+        patient_data["Subspecialty"].remove(subspecialty)
+        patient_data["Insurance"].remove(insurance)
+        print("New patient not added.")
+    else:
+        print("Invalid entry")
+        new_patient_data(patient_data)
+    return 

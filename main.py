@@ -42,7 +42,7 @@ def main():
         elif input_user == "2":
             create.new_patient_data(db.patient_data)
         elif input_user == "3":
-            update.update(db.patient_data)
+            update.edit_patient(db.patient_data)
         elif input_user == "4":
             delete.delete(db.patient_data)
         elif input_user == "5":
