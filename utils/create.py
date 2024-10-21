@@ -1,35 +1,42 @@
+import _mysql_connector
+from utils import connecting_to_db
 def new_patient_data(patient_data: dict):
-    """Function for create the data
+    """Function for creating data
     """
-    patient_id = input("Enter patient ID (8 digits): ")
-    name = input("Enter new patient name: ")
-    waiting_time = int(input("Enter waiting time: "))
-    exam_time = int(input("Enter exam time: "))
-    subspecialty = input("Enter subspecialty: ")
-    insurance = input("Enter insurance type: ")
-    
-    patient_data["Patient ID"].append(patient_id)
-    patient_data["Name"].append(name)
-    patient_data["Waiting Time"].append(waiting_time)
-    patient_data["Exam Time"].append(exam_time)
-    patient_data["Care Time"].append(waiting_time+exam_time)
-    patient_data["Subspecialty"].append(subspecialty)
-    patient_data["Insurance"].append(insurance)
-    for i in range(len(patient_data["Name"])):
-        print(f"ID: {patient_data['Patient ID'][i]} | Name: {patient_data['Name'][i]} | Waiting Time: {patient_data['Waiting Time'][i]} | Care Time: {patient_data['Care Time'][i]} | Exam Time: {patient_data['Exam Time'][i]} | Subspecialty: {patient_data['Subspecialty'][i]} | Insurance: {patient_data['Insurance'][i]}")
-    confirm_new_patient = input("Is the data correct (Y/N)? ")
-    if confirm_new_patient.upper() == "Y":
-        print("New patient added.")
-    elif confirm_new_patient.upper() == "N":
-        patient_data["Patient ID"].remove(patient_id)
-        patient_data["Name"].remove(name)
-        patient_data["Waiting Time"].remove(waiting_time)
-        patient_data["Exam Time"].remove(exam_time)
-        patient_data["Care Time"].remove(waiting_time+exam_time)
-        patient_data["Subspecialty"].remove(subspecialty)
-        patient_data["Insurance"].remove(insurance)
-        print("New patient not added.")
+    create_confirm = input("\nProceed with entering new patient data (Type Y to proceed, any other keys to cancel)? ")
+    if create_confirm.upper() == "Y":
+        patient_id = input("Enter patient ID (8 digits): ")
+        name = input("Enter new patient name: ")
+        waiting_time = int(input("Enter waiting time: "))
+        exam_time = int(input("Enter exam time: "))
+        subspecialty = input("Enter subspecialty: ")
+        insurance = input("Enter insurance type: ")
+        
+        try:
+            insert_patient_id = f"INSERT INTO patient(patientid, patient_name) VALUES ('{patient_id}', '{name}')"
+            insert_patient_id_2 = f"INSERT INTO queue (patientid,registrationid,queuedate,queueat) VALUES ('{patient_id}','01.18.01.201800300000.000','2018-09-01','00:00')"
+            insert_detail = f'''INSERT INTO queuedetail (registrationid, subspecialty, waitingtime, examtime, caretime, insurance) VALUES
+            ('01.18.01.201800300000.000','{subspecialty}','{waiting_time}','{exam_time}','{waiting_time+exam_time}','{insurance}')'''
+            connecting_to_db.exec_query(connecting_to_db.conn, insert_patient_id)
+            connecting_to_db.exec_query(connecting_to_db.conn, insert_patient_id_2)
+            connecting_to_db.exec_query(connecting_to_db.conn, insert_detail)
+            read_query = '''
+            SELECT p.patientid, p.patient_name, qd.waitingtime, qd.examtime, qd.caretime, qd.subspecialty, qd.insurance 
+            FROM patient p JOIN queue q ON p.patientid = q.patientid JOIN queuedetail qd ON q.registrationid = qd.registrationid;'''
+            data, column_names = connecting_to_db.exec_query(connecting_to_db.conn, read_query)
+            print(f"\n{column_names}")
+            for i in range(len(data)):
+                print(f'{data[i]}')
+            confirm_new_patient = input("Is the data correct (Y/N)? ")
+            if confirm_new_patient.upper() == "Y":
+                connecting_to_db.conn.commit()
+                print("New patient added.")
+            elif confirm_new_patient.upper() == "N":
+                print("New patient not added.")
+            else:
+                print("Invalid entry")
+        except Exception:
+            print("Unable to add patient.")
     else:
-        print("Invalid entry")
-        new_patient_data(patient_data)
+        print("Returning to main menu")
     return 
