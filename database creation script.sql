@@ -1,9 +1,9 @@
 CREATE DATABASE IF NOT EXISTS ophthalmology_patients;
+USE ophthalmology_patients;
 CREATE TABLE IF NOT EXISTS patient
 (
   patientid CHAR(8) NOT NULL,
-  firstName VARCHAR(255) NOT NULL,
-  lastName VARCHAR(255) NOT NULL,
+  patient_name VARCHAR(255) NOT NULL,
   PRIMARY KEY (patientid)
 );
 
@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS queue
   queuedate DATE NOT NULL,
   queueat TIME NOT NULL,
   PRIMARY KEY (registrationid),
-  FOREIGN KEY (patientid) REFERENCES patient(patientid)
+  FOREIGN KEY (patientid) REFERENCES patient(patientid) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS queuedetail
@@ -27,15 +27,15 @@ CREATE TABLE IF NOT EXISTS queuedetail
   caretime INT NOT NULL,
   insurance VARCHAR(255) NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (registrationid) REFERENCES queue(registrationid)
+  FOREIGN KEY (registrationid) REFERENCES queue(registrationid) ON DELETE CASCADE
 );
 
 # Patient
-INSERT INTO patient(patientid, firstName, lastName) VALUES ('12632466', 'Ediyanto', ' '),
-('12641025','Fatkul', 'Rozak'),
-('12573804','Dharmawan', 'Utomo'),
-('12683246', 'Ibnu', 'Krisdianto'),
-('12697269','Arif', 'Delianto');
+INSERT INTO patient(patientid, patient_name) VALUES ('12632466', 'Ediyanto'),
+('12641025','Fatkul Rozak'),
+('12573804','Dharmawan Utomo'),
+('12683246', 'Ibnu Krisdianto'),
+('12697269','Arif Delianto');
 
 # Queue
 INSERT INTO queue (patientid, registrationid, queuedate, queueat) VALUES

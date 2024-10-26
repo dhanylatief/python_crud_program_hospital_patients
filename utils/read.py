@@ -19,7 +19,8 @@ def show_patientdb(patient_data: dict):
             WHERE p.patientid = '{patient_search}' OR p.patient_name LIKE '%{patient_search}%';"""
             search_data, column_names = connecting_to_db.exec_query(connecting_to_db.conn, search_query)
             print(column_names)
-            print(search_data)
+            for i in range(len(search_data)):
+                print(f'{search_data[i]}')
         except Exception:
             print("Input not recognized")
     elif search_input.upper() == "N":

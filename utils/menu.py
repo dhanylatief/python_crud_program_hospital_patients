@@ -1,5 +1,6 @@
+from . import connecting_to_db
 def crud_menu():
-    print('''\nWelcome to Ophthalmology Patient Database
+    print(f'''\nWelcome to Ophthalmology Patient Database, {connecting_to_db.username}!
 1. View Patient Database
 2. Add a New Patient
 3. Edit a Patient Data
