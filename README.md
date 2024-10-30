@@ -36,9 +36,6 @@ This application is designed for data admins within the organization to facilita
 * **Security:**
     * Implement user authentication and authorization mechanisms (if sensitive data is involved) to control access to different CRUD operations.
     * ... (Specify additional security features as needed)
-* **Reporting:**
-    * Generate reports or summaries based on patient queue data to support hospital operations (optional).
-    * Export data in various formats (e.g., CSV, Excel) for further analysis (optional).
 
 ## Contributing
 We welcome contributions to this project! Please feel free to open a pull request, sent to m.dhany.latief@gmail.com or submit an issue if you encounter any problems or have suggestions for improvements.
