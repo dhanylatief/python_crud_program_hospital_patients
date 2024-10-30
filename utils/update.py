@@ -1,4 +1,5 @@
 import mysql.connector
+import tabulate
 from utils import connecting_to_db 
 def edit_patient(patient_data: dict):
     """Function for updating data
@@ -7,9 +8,7 @@ def edit_patient(patient_data: dict):
         read_query = f"""SELECT p.patientid, p.patient_name, qd.waitingtime, qd.examtime, qd.caretime, qd.subspecialty, qd.insurance 
         FROM patient p JOIN queue q ON p.patientid = q.patientid JOIN queuedetail qd ON q.registrationid = qd.registrationid;"""
         data, column_names = connecting_to_db.exec_query(connecting_to_db.conn, read_query)
-        print(f"\n{column_names}")
-        for i in range(len(data)):
-            print(f'{data[i]}')
+        print(tabulate.tabulate(data, headers = column_names, tablefmt = "fancy_grid"))
         id_edited = input("Enter patient ID of the patient you want to edit (type C to cancel): ")
         if id_edited.upper() == "C":
             print("Returning to main menu.")
@@ -35,14 +34,15 @@ def edit_patient(patient_data: dict):
             read_query = f"""SELECT p.patientid, p.patient_name, qd.waitingtime, qd.examtime, qd.caretime, qd.subspecialty, qd.insurance 
             FROM patient p JOIN queue q ON p.patientid = q.patientid JOIN queuedetail qd ON q.registrationid = qd.registrationid WHERE p.patientid = {id_edited};"""
             edited_data, column_names = connecting_to_db.exec_query(connecting_to_db.conn, read_query)
-            print(f"\n{column_names}")
-            print(edited_data)
+            print(tabulate.tabulate(edited_data, headers = column_names, tablefmt = "fancy_grid"))
             confirm_edit_patient = input("Is the data correct (Y/N)? ")
             if confirm_edit_patient.upper() == "Y":
                 connecting_to_db.conn.commit()
                 print("Patient data edited.")
+                input("Press enter to return to main menu.")
             elif confirm_edit_patient.upper() == "N":
                 print("Patient data not edited.")
+                input("Press enter to return to main menu.")
             else:
                 print("Invalid entry")
     except Exception:
