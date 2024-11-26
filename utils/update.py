@@ -1,50 +1,62 @@
-import mysql.connector
-import tabulate
-from utils import connecting_to_db 
 def edit_patient(patient_data: dict):
     """Function for updating data
     """
     try:
-        read_query = f"""SELECT p.patientid, p.patient_name, qd.waitingtime, qd.examtime, qd.caretime, qd.subspecialty, qd.insurance 
-        FROM patient p JOIN queue q ON p.patientid = q.patientid JOIN queuedetail qd ON q.registrationid = qd.registrationid;"""
-        data, column_names = connecting_to_db.exec_query(connecting_to_db.conn, read_query)
-        print(tabulate.tabulate(data, headers = column_names, tablefmt = "fancy_grid"))
-        id_edited = input("Enter patient ID of the patient you want to edit (type C to cancel): ")
+        for i in range(len(patient_data["Name"])):
+            print(f"ID: {patient_data['Patient ID'][i]} | Name: {patient_data['Name'][i]} | Waiting Time: {patient_data['Waiting Time'][i]} | Care Time: {patient_data['Care Time'][i]} | Exam Time: {patient_data['Exam Time'][i]} | Subspecialty: {patient_data['Subspecialty'][i]} | Insurance: {patient_data['Insurance'][i]}")
+        id_edited = input("\nEnter patient ID of the patient you want to edit (or type C to cancel editing): ")
         if id_edited.upper() == "C":
-            print("Returning to main menu.")
-        else:
-            new_name = input("Enter new patient name: ")
-            new_waiting_time = int(input("Enter waiting time: "))
-            new_exam_time = int(input("Enter exam time: "))
-            new_subspecialty = input("Enter subspecialty: ")
-            new_insurance = input("Enter insurance type: ")
-            edit_query_name = f"UPDATE patient SET patient_name = '{new_name}' WHERE patientid = {id_edited}"
-            connecting_to_db.exec_query(connecting_to_db.conn, edit_query_name)
-            edit_query_detail = f'''UPDATE 
-                                    queuedetail qd JOIN queue q ON q.registrationid = qd.registrationid 
-                                    JOIN patient p ON p.patientid = q.patientid 
-                                    SET 
-                                    subspecialty = '{new_subspecialty}', 
-                                    waitingtime = '{new_waiting_time}', 
-                                    examtime = '{new_exam_time}', 
-                                    caretime = '{new_waiting_time + new_exam_time}', 
-                                    insurance = '{new_insurance}' 
-                                    WHERE p.patientid = {id_edited};'''
-            connecting_to_db.exec_query(connecting_to_db.conn, edit_query_detail)
-            read_query = f"""SELECT p.patientid, p.patient_name, qd.waitingtime, qd.examtime, qd.caretime, qd.subspecialty, qd.insurance 
-            FROM patient p JOIN queue q ON p.patientid = q.patientid JOIN queuedetail qd ON q.registrationid = qd.registrationid WHERE p.patientid = {id_edited};"""
-            edited_data, column_names = connecting_to_db.exec_query(connecting_to_db.conn, read_query)
-            print(tabulate.tabulate(edited_data, headers = column_names, tablefmt = "fancy_grid"))
+            print("\nOperation aborted. Returning to main menu")
+        elif id_edited in patient_data["Patient ID"]:
+            edit_index = patient_data["Patient ID"].index(id_edited)
+            edit_name = input("Enter new patient name (leave blank to keep current): ")
+            edit_waiting_time = input("Enter new waiting time (leave blank to keep current): ")
+            edit_exam_time = input("Enter new exam time (leave blank to keep current): ")
+            edit_care_time = input("Enter new care time (leave blank to keep current): ")
+            edit_subspecialty = input("Enter new subspecialty (leave blank to keep current): ")
+            edit_insurance = input("Enter new insurance (leave blank to keep current): ")
+
+            patient_data_temp = {f"Name":[{patient_data["Name"][edit_index]}],
+                    "Waiting Time":[{patient_data["Waiting Time"][edit_index]}],
+                    "Exam Time": [{patient_data["Exam Time"][edit_index]}],
+                    "Care Time":[{patient_data["Care Time"][edit_index]}], 
+                    "Subspecialty": [{patient_data["Subspecialty"][edit_index]}],
+                    "Insurance": [{patient_data["Insurance"][edit_index]}]}
+            
+            if edit_name:
+                patient_data_temp["Name"] = edit_name
+            if edit_waiting_time:
+                patient_data_temp["Waiting Time"] = int(edit_waiting_time)
+            if edit_exam_time:
+                patient_data_temp["Exam Time"]= int(edit_exam_time)
+            if edit_care_time:
+                patient_data_temp["Care Time"] = int(edit_care_time)
+            if edit_subspecialty:
+                patient_data_temp["Subspecialty"] = edit_subspecialty
+            if edit_insurance:
+                patient_data_temp["Insurance"] = edit_insurance
+                
+            print("Edited patient data", end="\n")
+            print(f"ID: {patient_data['Patient ID'][edit_index]} | Name: {patient_data_temp['Name']} | Waiting Time: {patient_data_temp['Waiting Time']} | Care Time: {patient_data_temp['Care Time']} | Exam Time: {patient_data_temp['Exam Time']} | Subspecialty: {patient_data_temp['Subspecialty']} | Insurance: {patient_data_temp['Insurance']}")
             confirm_edit_patient = input("Is the data correct (Y/N)? ")
             if confirm_edit_patient.upper() == "Y":
-                connecting_to_db.conn.commit()
-                print("Patient data edited.")
-                input("Press enter to return to main menu.")
+                if edit_name:    
+                    patient_data["Name"][edit_index] = patient_data_temp["Name"]
+                if edit_waiting_time:
+                    patient_data["Waiting Time"][edit_index] = patient_data_temp["Waiting Time"]
+                if edit_exam_time:
+                    patient_data["Exam Time"][edit_index] = patient_data_temp["Exam Time"]
+                if edit_care_time:
+                    patient_data["Care Time"][edit_index] = patient_data_temp["Care Time"]
+                if edit_subspecialty:
+                    patient_data["Subspecialty"][edit_index] = patient_data_temp["Subspecialty"]
+                if edit_insurance:
+                    patient_data["Insurance"][edit_index] = patient_data_temp["Insurance"]
+                print("Patient data updated.")
             elif confirm_edit_patient.upper() == "N":
-                print("Patient data not edited.")
-                input("Press enter to return to main menu.")
-            else:
-                print("Invalid entry")
-    except Exception:
-            print("Input not recognized")
+                print("Patient data not updated.")
+        else:
+            print("Invalid patient ID.")
+    except:
+        print("Error occured")
     return
