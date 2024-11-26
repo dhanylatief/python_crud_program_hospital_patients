@@ -1,1 +1,1 @@
-You can populate this folder with module files from the Python program you've developed. [If you're using modularization]
+This folder contains module files from the program
